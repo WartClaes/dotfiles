@@ -1,7 +1,13 @@
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
 
 " Theming
-Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'rakr/vim-one'
 
 " Fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -18,8 +24,11 @@ Plug 'mattn/emmet-vim'
 
 call plug#end()
 
-" Use the Dracula theme
-colorscheme dracula
+" Use the Vim One theme
+let g:airline_theme='one'
+let g:one_allow_italics=1
+colorscheme one
+set background=dark
 
 " Make Vim more useful
 set nocompatible
