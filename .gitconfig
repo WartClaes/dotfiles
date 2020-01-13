@@ -80,6 +80,9 @@
 	}; f"
 
 	pu = "push origin HEAD"
+	
+  	# Do a push/pull for just one branch
+  	pl = "!git pull origin $(git branch-name)"
 
 [apply]
 
