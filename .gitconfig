@@ -79,14 +79,16 @@
 		fi \
 	}; f"
 
+	# CUSTOM ALIASSES
 	pu = "push origin HEAD"
+	o = checkout
 	
-	# Get the current branch name
-	branch-name = rev-parse --abbrev-ref HEAD
+	# Get the current branch name	
+	branch-name = rev-parse --abbrev-ref HEAD 
 	
   	# Do a pull for just one branch
   	pl = "!git pull origin $(git branch-name)"
-
+	
 [apply]
 
 	# Detect whitespace errors when applying a patch
