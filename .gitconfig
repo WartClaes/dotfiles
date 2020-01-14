@@ -81,7 +81,20 @@
 
 	# CUSTOM ALIASSES
 	pu = "push origin HEAD"
+	a = add
+  	b = branch
+  	c = commit
+	d = diff
+	f = fetch
+	g = grep
+	l = log
+	m = merge
 	o = checkout
+	p = pull
+	pu = push origin HEAD
+	r = remote
+	s = status
+	w = whatchanged
 	
 	# Get the current branch name	
 	branch-name = rev-parse --abbrev-ref HEAD 
