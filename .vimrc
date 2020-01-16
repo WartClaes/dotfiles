@@ -15,6 +15,7 @@ Plug 'junegunn/fzf.vim'
 
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
+Plug 'leafgarland/typescript-vim'
 
 " Utils
 Plug 'airblade/vim-gitgutter'
