@@ -7,7 +7,7 @@ endif
 call plug#begin('~/.vim/plugged')
 
 " Theming
-Plug 'NLKNguyen/papercolor-theme'
+Plug 'joshdick/onedark.vim'
 
 " Fuzzy search
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -15,7 +15,9 @@ Plug 'junegunn/fzf.vim'
 
 " Syntax highlighting
 Plug 'sheerun/vim-polyglot'
-Plug 'leafgarland/typescript-vim'
+
+" Vim surround
+Plug 'tpope/vim-surround'
 
 " Intellisense
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -34,9 +36,9 @@ Plug 'mattn/emmet-vim'
 call plug#end()
 
 " Use the Vim One theme
-let g:airline_theme='fruit_punch'
-colorscheme PaperColor
-set background=dark
+" let g:airline_theme='papercolor'
+colorscheme onedark
+" set background=dark
 
 " Make Vim more useful
 set nocompatible
