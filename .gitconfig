@@ -15,9 +15,6 @@
 	# Pull in remote changes for the current repository and all its submodules
 	p = !"git pull; git submodule foreach git pull origin master"
 
-	# Clone a repository including all submodules
-	c = clone --recursive
-
 	# Commit all changes
 	ca = !git add -A && git commit -av
 
@@ -84,24 +81,20 @@
 	a = add
   	b = branch
   	c = commit
-	d = diff
 	f = fetch
 	g = grep
-	l = log
 	m = merge
 	o = checkout
-	p = pull
 	pu = push origin HEAD
 	r = remote
-	s = status
 	w = whatchanged
-	
-	# Get the current branch name	
-	branch-name = rev-parse --abbrev-ref HEAD 
-	
+
+	# Get the current branch name
+	branch-name = rev-parse --abbrev-ref HEAD
+
   	# Do a pull for just one branch
   	pl = "!git pull origin $(git branch-name)"
-	
+
 [apply]
 
 	# Detect whitespace errors when applying a patch
