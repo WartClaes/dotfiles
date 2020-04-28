@@ -27,3 +27,6 @@ style = "bold red"
 [[battery.display]]
 threshold = 20
 style = "bold yellow"
+
+[aws]
+displayed_items = "profile"

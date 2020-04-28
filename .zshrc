@@ -12,3 +12,4 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
+export LANG=en_US.UTF-8
