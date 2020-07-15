@@ -23,6 +23,9 @@ Plug 'tpope/vim-surround'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = ['coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-angular']
 
+" JSBeautify
+Plug 'maksimr/vim-jsbeautify'
+
 "Airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -118,6 +121,8 @@ set showmode
 set title
 " Show the (partial) command as it’s being typed
 set showcmd
+" Set line columns
+set colorcolumn=80,120
 " Use relative line numbers
 if exists("&relativenumber")
 	set relativenumber
@@ -125,6 +130,19 @@ if exists("&relativenumber")
 endif
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
+" if hidden is not set, TextEdit might fail.
+set hidden
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+" Better display for messages
+set cmdheight=2
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
@@ -150,6 +168,10 @@ endif
 
 nnoremap <C-p> :Files<CR>
 
+"
+" =========================
+" 🔑 DISABLE MOUSE AND KEYS
+" =========================
 " Disable mouse
 set mouse-=a
 set ttymouse-=a
@@ -172,25 +194,10 @@ vnoremap <Right> :<C-u>echo "No right for you!"<CR>
 vnoremap <Down> :<C-u>echo "No down for you!"<CR>
 vnoremap <Up> :<C-u>echo "No up for you!"<CR>
 
-" if hidden is not set, TextEdit might fail.
-set hidden
 
-" Some servers have issues with backup files, see #649
-set nobackup
-set nowritebackup
-
-" Better display for messages
-set cmdheight=2
-
-" You will have bad experience for diagnostic messages when it's default 4000.
-set updatetime=300
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-" always show signcolumns
-set signcolumn=yes
-
+" ======
+" 🐓 COC
+" ======
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
@@ -301,4 +308,16 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-set colorcolumn=80,120
+
+" ==============
+" 💅 JS BEAUTIFY
+" ==============
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+" for json
+autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+" for jsx
+autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+" for html
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+" for css or scss
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
