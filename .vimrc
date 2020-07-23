@@ -143,6 +143,8 @@ set updatetime=300
 set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
+" fix redraw time exceeded
+set re=0
 
 " Strip trailing whitespace (,ss)
 function! StripWhitespace()
