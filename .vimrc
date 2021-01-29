@@ -19,6 +19,9 @@ Plug 'sheerun/vim-polyglot'
 " Vim surround
 Plug 'tpope/vim-surround'
 
+" Comments
+Plug 'tomtom/tcomment_vim'
+
 " Intellisense
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = ['coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-angular']
