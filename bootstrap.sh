@@ -45,11 +45,14 @@ function commitizen() {
     echo "";
 
     if [[ $reply =~ ^[Yy]$ ]]; then
-        echo "🏗  [1/2] Installing commitizen... "
+        echo "🏗  [1/3] Installing commitizen... "
         npm install -g commitizen > /dev/null 2>&1
 
-        echo "🏗  [2/2] Installing conventional-changelog... "
+        echo "🏗  [2/3] Installing conventional-changelog... "
         npm install -g cz-conventional-changelog > /dev/null 2>&1
+
+        echo "🏗  [3/3] Creating .czrc file... "
+        echo '{ "path": "cz-conventional-changelog" }' > ~/.czrc
 
         echo ""
         echo "✅  Install complete"
