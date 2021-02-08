@@ -17,7 +17,7 @@ function gitConfig() {
 }
 
 function copy() {
-    echo "🚚 Copying files"
+    echo "🚚  Copying files"
 
     rsync --exclude ".git/" \
         --exclude ".DS_Store" \
