@@ -24,7 +24,7 @@ Plug 'tomtom/tcomment_vim'
 
 " Intellisense
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = ['coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-angular']
+let g:coc_global_extensions = ['coc-css', 'coc-html', 'coc-json', 'coc-tsserver', 'coc-angular', 'coc-eslint', 'coc-stylelintplus']
 
 " JSBeautify
 Plug 'maksimr/vim-jsbeautify'
@@ -35,7 +35,6 @@ Plug 'vim-airline/vim-airline-themes'
 
 " Utils
 Plug 'airblade/vim-gitgutter'
-Plug 'dense-analysis/ale'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'mattn/emmet-vim'
 
@@ -171,7 +170,7 @@ if has("autocmd")
 	autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
 endif
 
-nnoremap <C-p> :Files<CR>
+nnoremap <C-p> :FZF<CR>
 
 "
 " =========================
