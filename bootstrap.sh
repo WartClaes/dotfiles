@@ -40,6 +40,20 @@ function copy() {
     echo ""
 }
 
+function zsh() {
+    read reply"?Want to install ZSH? (y/N) ";
+    echo "";
+
+    if [[ $reply =~ ^[Yy]$ ]]; then
+        echo "🏗  Installing oh my zsh... "
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" > /dev/null 2>&1
+
+        echo ""
+        echo "✅  Install complete"
+        echo "";
+    fi;
+}
+
 function commitizen() {
     read reply"?Want to install Commitizen? (y/N) ";
     echo "";
@@ -61,12 +75,14 @@ function commitizen() {
 }
 
 function doIt() {
+    zsh;
     copy;
     gitConfig;
     commitizen;
 
     echo "♥️  All steps completed, have fun!"
 
+    unset zsh;
     unset copy;
     unset gitConfig;
     unset commitizen;
