@@ -41,7 +41,7 @@ return {
                 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
                 vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
                 vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-                vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
+                -- vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
                 vim.keymap.set({ 'n', 'i' }, '<M-k>', vim.lsp.buf.signature_help, bufopts)
                 vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, bufopts)
                 vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
@@ -97,6 +97,7 @@ return {
                         -- }
                     }
                 },
+                csharp_ls = {},
                 vimls = {},
                 yamlls = {},
             }

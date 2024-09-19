@@ -22,8 +22,8 @@ return {
           f = { '<cmd>Telescope find_files<cr>', '[F]ind [F]iles' },
           g = { '<cmd>Telescope git_files<cr>', '[F]ind [G]it files' },
           r = { '<cmd>Telescope oldfiles<cr>', '[F]ind [R]ecent files' },
-          s = { '<cmd>Telescope live_grep_args<cr>', 'Search string' },
-          S = {
+          S = { '<cmd>Telescope live_grep_args<cr>', 'Search string' },
+          s = {
             function()
               require('telescope.builtin').grep_string({
                 shorten_path = true,

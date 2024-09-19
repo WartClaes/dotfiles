@@ -21,7 +21,23 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd('colorscheme shades_of_purple')
+      -- vim.cmd('colorscheme shades_of_purple')
+    end
+  },
+  {
+    'EdenEast/nightfox.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd('colorscheme duskfox')
+    end
+  },
+  {
+    'liuchengxu/space-vim-dark',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd('colorscheme space-vim-dark')
     end
   }
 }

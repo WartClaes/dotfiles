@@ -1,4 +1,27 @@
-return { 
+return {
+  {
+    'JoosepAlviste/nvim-ts-context-commentstring',
+    lazy = true
+  },
+  {
+    'echasnovski/mini.comment',
+    event = 'VeryLazy',
+    version = '*',
+    opts = {
+      options = {
+        custom_commentstring = function()
+          return require('ts_context_commentstring').calculate_commentstring() or vim.bo
+          .commentstring
+        end,
+      },
+    },
+  },
+  {
+    'echasnovski/mini.surround',
+    event = 'VeryLazy',
+    version = '*',
+    opts = {},
+  },
   {
     'jinh0/eyeliner.nvim',
     event = 'VeryLazy',
@@ -41,6 +64,15 @@ return {
             i = { ['<c-d>'] = 'delete_buffer' }
           }
         }
+      }
+    },
+    extensions = {
+      fzf = {
+        fuzzy = true,                    -- false will only do exact matching
+        override_generic_sorter = true,  -- override the generic sorter
+        override_file_sorter = true,     -- override the file sorter
+        case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+        -- the default case_mode is "smart_case"
       }
     },
     config = function(_, opts)
