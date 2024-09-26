@@ -88,6 +88,9 @@ set number
 syntax on
 " Highlight current line
 set cursorline
+hi LineNr   cterm=NONE ctermbg=none ctermfg=205 guibg=none guifg=#ff5faf
+hi CursorLineNr   cterm=NONE ctermbg=none ctermfg=white guibg=none guifg=white
+
 " tabstop:          Width of tab character
 " softtabstop:      Fine tunes the amount of white space to be added
 " shiftwidth        Determines the amount of whitespace to add in normal mode
