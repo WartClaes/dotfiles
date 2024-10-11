@@ -7,8 +7,6 @@ eval "$(starship init zsh)"
 alias vi='nvim'
 alias vim='nvim'
 
-ZSH_THEME="shades-of-purple"
-
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh

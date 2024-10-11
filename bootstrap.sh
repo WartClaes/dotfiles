@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 cd "$(dirname "${BASH_SOURCE}")";
 
@@ -74,8 +74,8 @@ function commitizen() {
   fi;
 }
 
-function brew() {
-  read reply"?Want to install brew packages?";
+function brewInstall() {
+  read reply"?Want to install brew packages? (y/N) ";
   echo "";
 
   if [[ $reply =~ ^[Yy]$ ]]; then
@@ -125,7 +125,7 @@ function doIt() {
   copy;
   gitConfig;
   commitizen;
-  brew;
+  brewInstall;
 
   echo "♥️  All steps completed, have fun!"
 
@@ -137,7 +137,12 @@ function doIt() {
 
 
 if [ "$1" "==" "--force" -o "$1" "==" "-f" ]; then
+  echo "Force it"
+
   doIt;
+elif [ "$1" "==" "--brew" -o "$1" "==" "-b" ]; then
+  echo "Brew it"
+  brewInstall
 else
   echo ""
   read reply"?This may overwrite existing files in your home directory. Are you sure? (y/N) ";
