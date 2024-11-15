@@ -58,6 +58,21 @@ return {
             local capabilities = vim.lsp.protocol.make_client_capabilities()
             capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
+            local vstlsLanguageSettings = {
+                updateImportsOnFileMove = { enabled = "always" },
+                suggest = {
+                    completeFunctionCalls = true,
+                },
+                inlayHints = {
+                    enumMemberValues = { enabled = true },
+                    functionLikeReturnTypes = { enabled = true },
+                    parameterNames = { enabled = "literals" },
+                    parameterTypes = { enabled = true },
+                    propertyDeclarationTypes = { enabled = true },
+                    variableTypes = { enabled = false },
+                },
+            }
+
             -- Enable the following language servers
             local servers = {
                 eslint = {},
@@ -88,18 +103,25 @@ return {
                         }
                     }
                 },
-                tsserver = {
-                    single_file_support = false,
-                    init_options = {
-                        hostInfo = 'neovim',
-                        -- preferences = {
-                        --     includeCompletionsForModuleExports = false
-                        -- }
-                    }
+                vtsls = {
+                    settings = {
+                        complete_function_calls = true,
+                        vtsls = {
+                            enableMoveToFileCodeAction = true,
+                            autoUseWorkspaceTsdk = true,
+                            experimental = {
+                                completion = {
+                                    enableServerSideFuzzyMatch = true,
+                                },
+                            },
+                        },
+                        typescript = vstlsLanguageSettings,
+                        javascript = vstlsLanguageSettings,
+                    },
                 },
-                csharp_ls = {},
                 vimls = {},
                 yamlls = {},
+                angularls = {},
             }
 
             require('mason-lspconfig').setup({
