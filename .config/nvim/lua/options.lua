@@ -36,5 +36,7 @@ vim.cmd("cnoreabbrev WQ wq")
 vim.cmd("cnoreabbrev W w")
 vim.cmd("cnoreabbrev Q q")
 
+vim.cmd("autocmd BufEnter *.component.ts syntax match htmlTemplate /\vtemplate:s*`.*`/")
+vim.cmd("autocmd BufEnter *.component.ts syntax region htmlTemplate start=+\vtemplate:s*`+ end=+`+ containedin=typescript")
+
 o.mouse = ""
-o.ttymouse = ""

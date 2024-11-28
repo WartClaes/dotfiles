@@ -1,4 +1,6 @@
 return {
+  { 'echasnovski/mini.nvim', version = false },
+  { 'nvim-tree/nvim-web-devicons', version = false },
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
@@ -6,59 +8,117 @@ return {
     init = function()
       local wk = require('which-key')
 
-      wk.register({
-        b = {
-          name = 'Buffer',
-          d = { '<cmd>bd<cr>', 'Delete buffer' },
-          n = { '<cmd>bn<cr>', 'Next buffer' },
-          p = { '<cmd>bp<cr>', 'Previous buffer' },
-          r = { '<cmd>Telescope buffers<cr>', 'Open recent buffer' },
-          s = { '<cmd>Telescope current_buffer_fuzzy_find<cr>', 'Search buffer' },
+      wk.add({
+        -- buffers
+        { '<leader>b',  group = 'Buffer' },
+        { '<leader>bd', '<cmd>bd<cr>',                                  desc = 'Delete buffer' },
+        { '<leader>bn', '<cmd>bn<cr>',                                  desc = 'Next buffer' },
+        { '<leader>bp', '<cmd>bp<cr>',                                  desc = 'Previous buffer' },
+        { '<leader>br', '<cmd>Telescope buffers<cr>',                   desc = 'Open recent buffer' },
+        { '<leader>bs', '<cmd>Telescope current_buffer_fuzzy_find<cr>', desc = 'Search buffer' },
+        { '[b',         '<cmd>bprev<cr>',                               desc = 'Previous buffer' },
+        { '[B',         '<cmd>bfirst<cr>',                              desc = 'First buffer' },
+        { ']b',         '<cmd>bnext<cr>',                               desc = 'Next buffer' },
+        { ']B',         '<cmd>blast<cr>',                               desc = 'Last buffer' },
+
+
+        -- files
+        { '<leader>f',  group = 'File' },
+        { '<leader>fb', '<cmd>Telescope buffers<cr>',                   desc = 'Open buffer' },
+        { '<leader>fd', '<cmd>Telescope diagnostics<cr>',               desc = 'Search diagnostics' },
+        { '<leader>ff', '<cmd>Telescope find_files<cr>',                desc = '[F]ind [F]iles' },
+        { '<leader>fg', '<cmd>Telescope git_files<cr>',                 desc = '[F]ind [G]it files' },
+        { '<leader>fh', '<cmd>Telescope help_tags<cr>',                 desc = '[F]ind [H]elp' },
+        { '<leader>fr', '<cmd>Telescope oldfiles<cr>',                  desc = '[F]ind [R]ecent files' },
+        { '<leader>fs', '<cmd>Telescope live_grep_args<cr>',            desc = 'Search string' },
+        { '<leader>fw', '<cmd>Telescope grep_string<cr>',               desc = 'Search word under cursor' },
+        {
+          '<leader>fw',
+          function()
+            local live_grep_args_shortcuts = require("telescope-live-grep-args.shortcuts")
+            live_grep_args_shortcuts.grep_visual_selection()
+          end,
+          desc = 'Search visual selection',
+          mode = 'v'
         },
-        f = {
-          name = 'File',
-          b = { '<cmd>Telescope buffers<cr>', 'Open buffers' },
-          d = { '<cmd>Telescope diagnostics<cr>', 'Search diagnostics' },
-          f = { '<cmd>Telescope find_files<cr>', '[F]ind [F]iles' },
-          g = { '<cmd>Telescope git_files<cr>', '[F]ind [G]it files' },
-          r = { '<cmd>Telescope oldfiles<cr>', '[F]ind [R]ecent files' },
-          S = { '<cmd>Telescope live_grep_args<cr>', 'Search string' },
-          s = {
-            function()
-              require('telescope.builtin').grep_string({
-                shorten_path = true,
-                word_match = "-w",
-                only_sort_text = true,
-                search = ''
-              }) end, '[F]uzzy [S]earch words',
-            },
-            w = { '<cmd>Telescope grep_string<cr>', 'Search word under cursor' },
-          },
-          h = { name = 'Harpoon' },
-          p = {
-            name = 'Packages',
-            s = { function() require('package-info').show() end, 'Show dependency versions' },
-            c = { function() require('package-info').hide() end, 'Hide dependency versions' },
-            t = { function() require('package-info').toggle() end, 'Toggle dependency versions' },
-            u = { function() require('package-info').update() end, 'Update dependency on the line' },
-            d = { function() require('package-info').delete() end, 'Delete dependency on the line' },
-            i = { function() require('package-info').install() end, 'Install a new dependency' },
-            p = { function() require('package-info').change_version() end, 'Install a different version' },
-          },
-        }, { prefix = '<leader>' })
+        {
+          '<leader>fS',
+          function()
+            require('telescope.builtin').grep_string({
+              shorten_path = true,
+              word_match = "-w",
+              only_sort_text = true,
+              search = ''
+            })
+          end,
+          desc = '[F]uzzy [S]earch words',
+        },
+        -- { '<leader>fS', '<cmd>Telescope lsp_dynamic_workspace_symbols<cr>', desc = 'Search symbol' },
 
-        wk.register({
-          B = { '<cmd>bfirst<cr>', 'First buffer' },
-          b = { '<cmd>bprev<cr>', 'Previous buffer' },
-          h = { function() require('harpoon.ui').nav_prev() end, 'Previous harpoon mark' },
-        }, { prefix = '[' })
+        -- harpoon
+        { '<leader>h',  group = 'Harpoon' },
+        { '[h',         function() require('harpoon.ui').nav_prev() end,         desc = 'Previous harpoon mark' },
+        { ']h',         function() require('harpoon.ui').nav_next() end,         desc = 'Next harpoon mark' },
 
-        wk.register({
-          B = { '<cmd>blast<cr>', 'Last buffer' },
-          b = { '<cmd>bnext<cr>', 'Next buffer' },
-          h = { function() require('harpoon.ui').nav_next() end, 'Next harpoon mark' },
-        }, { prefix = ']' })
-      end,
-      opts = {}
+        -- packages
+        { '<leader>p',  group = 'Packages' },
+        { '<leader>ps', function() require('package-info').show() end,           desc = 'Show dependency versions' },
+        { '<leader>pc', function() require('package-info').hide() end,           desc = 'Hide dependency versions' },
+        { '<leader>pt', function() require('package-info').toggle() end,         desc = 'Toggle dependency versions' },
+        { '<leader>pu', function() require('package-info').update() end,         desc = 'Update dependency on the line' },
+        { '<leader>pd', function() require('package-info').delete() end,         desc = 'Delete dependency on the line' },
+        { '<leader>pi', function() require('package-info').install() end,        desc = 'Install a new dependency' },
+        { '<leader>pp', function() require('package-info').change_version() end, desc = 'Install a different version' },
+      })
+    end,
+    opts = {
+      preset = 'modern'
+    }
+  },
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    keys = {
+      { "<leader>gb", function() Snacks.git.blame_line() end, desc = "Git Blame Line" },
     },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      dashboard = {
+        enabled = true,
+        sections = {
+          { section = "header" },
+          { section = "keys", gap = 1, padding = 1 },
+          { section = "startup" },
+          {
+            section = "terminal",
+            cmd = "pokemon-colorscripts -r --no-title; sleep .1",
+            random = 10,
+            pane = 2,
+            indent = 4,
+            height = 30,
+          },
+        },
+      },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          _G.dd = function(...)
+            Snacks.debug.inspect(...)
+          end
+          _G.bt = function()
+            Snacks.debug.backtrace()
+          end
+          vim.print = _G.dd -- Override print to use snacks for `:=` command
+        end,
+      })
+    end,
+    config = function(_, opts)
+      require("snacks").setup(opts)
+    end,
   }
+}

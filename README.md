@@ -2,39 +2,20 @@
 
 ```
 $ source bootstrap.sh
-
-$ vim ~/.vimrc
 ```
 
-Then type inside the `.vimrc` file -> `:PlugInstall`
-> For more info: https://github.com/junegunn/vim-plug
+Then type `:Lazy` inside NeoVim
 
 ## Requirements
 
-### install ripgrep
+### Font
 
-In Vim we use [FZF](https://github.com/junegunn/fzf.vim) for searching in files. 
-This uses [ripgrep](https://github.com/BurntSushi/ripgrep) below the surface for enhanced performance.
-
-
-```
-$ brew install ripgrep
-```
-
-### Starship
-
-[Starship](https://starship.rs/) is used for some extra customizing in the shell.
-
-The config can be found in `.config/starship.toml`.
-
-```
-$ brew install starship
-```
-
-#### Font
-
-Starship requires you to [use a font](https://starship.rs/presets/#nerd-font-symbols) 
+Starship and Neovim require you to [use a nerd font](https://www.nerdfonts.com/font-downloads) 
 that understands all the characters being used.
 
 The font I currently use is `Droid Sans Mono for PowerLine` and can be found in 
 the [powerline/fonts Github](https://github.com/powerline/fonts/).
+
+### Pokemons
+
+The nvim dashboard also contains pokemons. In order to make these work go visit the [repository](https://github.com/nuke-dash/pokemon-colorscripts-mac)
