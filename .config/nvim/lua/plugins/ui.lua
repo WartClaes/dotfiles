@@ -2,6 +2,15 @@ return {
   { 'echasnovski/mini.nvim', version = false },
   { 'nvim-tree/nvim-web-devicons', version = false },
   {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
+  {
     'folke/which-key.nvim',
     event = 'VeryLazy',
     version = '*',
@@ -32,6 +41,8 @@ return {
         { '<leader>fr', '<cmd>Telescope oldfiles<cr>',                  desc = '[F]ind [R]ecent files' },
         { '<leader>fs', '<cmd>Telescope live_grep_args<cr>',            desc = 'Search string' },
         { '<leader>fw', '<cmd>Telescope grep_string<cr>',               desc = 'Search word under cursor' },
+
+        { '<leader>lt', '<cmd>TodoTelescope<cr>',                       desc = 'Show Todos' },
         {
           '<leader>fw',
           function()
@@ -94,7 +105,7 @@ return {
           { section = "startup" },
           {
             section = "terminal",
-            cmd = "pokemon-colorscripts -r --no-title; sleep .1",
+            cmd = "pokemon-colorscripts -r 1 --no-title; sleep .1",
             random = 10,
             pane = 2,
             indent = 4,
@@ -120,5 +131,13 @@ return {
     config = function(_, opts)
       require("snacks").setup(opts)
     end,
+  },
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "VeryLazy", -- Or `LspAttach`
+    priority = 1000, -- needs to be loaded in first
+    config = function()
+      require('tiny-inline-diagnostic').setup()
+    end
   }
 }

@@ -39,4 +39,6 @@ vim.cmd("cnoreabbrev Q q")
 vim.cmd("autocmd BufEnter *.component.ts syntax match htmlTemplate /\vtemplate:s*`.*`/")
 vim.cmd("autocmd BufEnter *.component.ts syntax region htmlTemplate start=+\vtemplate:s*`+ end=+`+ containedin=typescript")
 
+vim.diagnostic.config({ virtual_text = false })
+
 o.mouse = ""
