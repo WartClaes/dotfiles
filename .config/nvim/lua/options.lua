@@ -13,6 +13,7 @@ o.smartindent = true
 o.smarttab = true
 o.shiftwidth = 2
 o.softtabstop = -1 -- If negative, shiftwidth value is used
+o.colorcolumn = '80,120'
 
 -- Makes neovim and host OS clipboard play nicely with each other
 o.clipboard = 'unnamedplus'
