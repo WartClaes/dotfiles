@@ -42,4 +42,12 @@ vim.cmd("autocmd BufEnter *.component.ts syntax region htmlTemplate start=+\vtem
 
 vim.diagnostic.config({ virtual_text = false })
 
+vim.filetype.add({
+  extension = {
+    mdx = 'mdx'
+  }
+})
+
+vim.treesitter.language.register('markdown', 'mdx')  -- the someft filetype will use the python parser and queries.
+
 o.mouse = ""
