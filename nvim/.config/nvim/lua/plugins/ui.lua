@@ -107,7 +107,7 @@ return {
           {
             pane = 2,
             section = "terminal",
-            cmd = "chafa ~/clippy.png --format symbols --symbols vhalf --size 50x50; sleep .5",
+            cmd = "chafa ~/Pictures/clippy.png --format symbols --symbols vhalf --size 50x50; sleep .5",
             height = 20,
             padding = 1,
           },
