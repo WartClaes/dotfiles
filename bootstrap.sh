@@ -92,6 +92,7 @@ function brewInstall() {
 
     echo "🏗  [3/3] Installing packages... "
     PACKAGES=(
+      1password
       cmake
       fzf
       git

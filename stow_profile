@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+if [[ -z $STOW_FOLDERS ]]; then
+    STOW_FOLDERS="git,kitty,nvim,starship,stow,vim,zsh"
+fi
+
+if [[ -z $DOTFILES ]]; then
+    DOTFILES=$HOME/git/personal/dotfiles
+fi
