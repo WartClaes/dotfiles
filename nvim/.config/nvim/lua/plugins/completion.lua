@@ -1,5 +1,27 @@
 return {
   {
+    'github/copilot.vim',
+    lazy = false,
+    config = function()
+      vim.g.copilot_enabled = false
+      vim.g.copilot_no_tab_map = true
+
+      vim.keymap.set('n', '<leader>ce', ':Copilot enable<CR>');
+      vim.keymap.set('n', '<leader>cd', ':Copilot disable<CR>');
+
+      vim.keymap.set('i', '<M-j>', 'copilot#Accept("\\<CR>")', {
+        expr = true,
+        replace_keycodes = false
+      })
+
+      vim.keymap.set('i', '<M-l>', '<Plug>(copilot-accept-word)')
+
+      vim.g.copilot_filetypes = {
+        gitcommit = true
+      }
+    end
+  },
+  {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
