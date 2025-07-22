@@ -103,6 +103,8 @@ function brewInstall() {
       ripgrep
       starship
       tree-sitter
+      zoxide
+      zsh-autocomplete-git
     )
     brew install ${PACKAGES[@]} -q
 

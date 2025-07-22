@@ -1,6 +1,9 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# path to zsh-autocomplete
+source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
 # Set name of the theme to load
 eval "$(starship init zsh)"
 
@@ -44,3 +47,10 @@ load-nvmrc() {
 
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/wart/.lmstudio/bin"
+# End of LM Studio CLI section
+
+# Enable zoxide
+eval "$(zoxide init zsh)"
