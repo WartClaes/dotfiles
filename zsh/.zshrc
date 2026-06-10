@@ -1,9 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# path to zsh-autocomplete
-source /opt/homebrew/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
-
 # Set name of the theme to load
 eval "$(starship init zsh)"
 
@@ -54,3 +51,7 @@ export PATH="$PATH:/Users/wart/.lmstudio/bin"
 
 # Enable zoxide
 eval "$(zoxide init zsh)"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Added by get-aspire-cli.sh
+export PATH="$HOME/.aspire/bin:$PATH"

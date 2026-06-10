@@ -29,7 +29,7 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      -- vim.cmd('colorscheme duskfox')
+      vim.cmd('colorscheme duskfox')
     end
   },
   {
@@ -54,7 +54,23 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd('colorscheme kanagawa')
+      -- vim.cmd('colorscheme kanagawa')
+    end
+  },
+  {
+    'scottmckendry/cyberdream.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd('colorscheme cyberdream')
+    end
+  },
+  {
+    'letorbi/vim-colors-modern-borland',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- vim.cmd('colorscheme borland')
     end
   }
 }

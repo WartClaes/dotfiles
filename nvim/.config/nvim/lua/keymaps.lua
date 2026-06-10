@@ -26,7 +26,7 @@ utils.map('x', '<leader>p', [["_dP]])
 utils.map({ 'n', 'v' }, '<leader>d', [["_d]])
 
 -- setup mapping to call :LazyGit
-utils.map('n', '<leader>gg', ':LazyGit<CR>');
+-- utils.map('n', '<leader>gg', ':LazyGit<CR>');
 
 -- Eslint
 utils.map('n', 'E', ':EslintFixAll<CR>')
@@ -54,3 +54,9 @@ utils.map('v', '<Left>', ':echo "No left for you!"<CR>');
 utils.map('v', '<Right>', ':echo "No right for you!"<CR>');
 utils.map('v', '<Down>', ':echo "No down for you!"<CR>');
 utils.map('v', '<Up>', ':echo "No up for you!"<CR>');
+
+-- Quickfix list
+utils.map('n', '<leader>co', ':copen<CR>', { desc = 'Open Quickfix' });
+utils.map('n', '<leader>cc', ':close<CR>', { desc = 'Close Quickfix' });
+utils.map('n', '<leader>cn', ':cnext<CR>', { desc = 'Next Entry' });
+utils.map('n', '<leader>cp', ':cprev<CR>', { desc = 'Previous Entry' });
