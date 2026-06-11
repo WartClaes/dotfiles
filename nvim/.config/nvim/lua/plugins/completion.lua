@@ -1,22 +1,30 @@
 vim.o.autocomplete = true
 vim.o.completeopt = 'menu,menuone,noinsert,noselect,fuzzy,popup'
 
-vim.keymap.set('i', '<Tab>', function()
-  return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
-end, { expr = true, silent = true })
+-- Keymaps are set after VeryLazy fires so copilot.vim (lazy=false) can't overwrite them.
+-- copilot.vim sets its own <Tab> mapping during its config, which runs before VeryLazy.
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'VeryLazy',
+  once = true,
+  callback = function()
+    vim.keymap.set('i', '<Tab>', function()
+      return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
+    end, { expr = true, silent = true })
 
-vim.keymap.set('i', '<S-Tab>', function()
-  return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
-end, { expr = true, silent = true })
+    vim.keymap.set('i', '<S-Tab>', function()
+      return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
+    end, { expr = true, silent = true })
 
-vim.keymap.set('i', '<CR>', function()
-  if vim.fn.pumvisible() == 1 and vim.fn.complete_info()['selected'] ~= -1 then
-    return '<C-y>'
-  end
-  return '<CR>'
-end, { expr = true, silent = true })
+    vim.keymap.set('i', '<CR>', function()
+      if vim.fn.pumvisible() == 1 and vim.fn.complete_info()['selected'] ~= -1 then
+        return '<C-y>'
+      end
+      return '<CR>'
+    end, { expr = true, silent = true })
 
-vim.keymap.set('i', '<C-Space>', '<C-x><C-o>', { silent = true })
+    vim.keymap.set('i', '<C-Space>', '<C-x><C-o>', { silent = true })
+  end,
+})
 
 return {
   {
