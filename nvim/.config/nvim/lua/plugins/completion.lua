@@ -1,4 +1,5 @@
-vim.o.completeopt = 'menu,menuone,noinsert,noselect,fuzzy'
+vim.o.autocomplete = true
+vim.o.completeopt = 'menu,menuone,noinsert,noselect,fuzzy,popup'
 
 vim.keymap.set('i', '<Tab>', function()
   return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
