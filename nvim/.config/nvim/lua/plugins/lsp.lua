@@ -7,15 +7,14 @@ return {
     },
     {
         'j-hui/fidget.nvim',
-        tag = 'legacy',
         event = 'LspAttach',
-        config = function()
-            require 'fidget'.setup({
+        opts = {
+            notification = {
                 window = {
-                    blend = 0,
+                    winblend = 0,
                 },
-            })
-        end
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
@@ -25,13 +24,8 @@ return {
             'williamboman/mason-lspconfig.nvim',
             'b0o/schemastore.nvim',
             'yioneko/nvim-vtsls',
-            'hrsh7th/cmp-nvim-lsp',
         },
         config = function()
-            -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
             local vstlsLanguageSettings = {
                 updateImportsOnFileMove = { enabled = "always" },
                 suggest = {
@@ -47,7 +41,6 @@ return {
                 },
             }
 
-            -- Enable the following language servers
             local servers = {
                 eslint = {},
                 jsonls = {
@@ -67,8 +60,6 @@ return {
                             workspace = { checkThirdParty = false },
                             format = {
                                 enable = true,
-                                -- Put format options here
-                                -- NOTE: the value should be STRING!!
                                 defaultConfig = {
                                     indent_style = "space",
                                     indent_size = "4",
@@ -102,23 +93,22 @@ return {
                 yamlls = {},
             }
 
-            require('mason').setup({});
+            require('mason').setup({})
 
             require('mason-lspconfig').setup({
-                -- install all necessary language servers
                 ensure_installed = vim.tbl_keys(servers),
             })
 
-            -- global config
-            vim.lsp.config('*', {
-                capabilities = capabilities,
-            })
-
-            -- config specific settings and enable
             for server_name, server_settings in pairs(servers) do
                 vim.lsp.config(server_name, server_settings)
                 vim.lsp.enable(server_name)
             end
+
+            vim.api.nvim_create_autocmd('LspAttach', {
+                callback = function(args)
+                    vim.lsp.completion.enable(args.buf, { autotrigger = true })
+                end,
+            })
 
             -- remove vim.lsp.config defaults
             vim.keymap.del('n', 'gra')
@@ -126,7 +116,6 @@ return {
             vim.keymap.del('n', 'grn')
             vim.keymap.del('n', 'grr')
 
-            -- add custom
             local keyBindOpts = { noremap = true, silent = true }
 
             local function with_desc(desc)
@@ -138,7 +127,6 @@ return {
             vim.keymap.set('n', 'gd', vim.lsp.buf.definition, with_desc('Go to definition'))
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, with_desc('Show hover'))
             vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, with_desc('Go to implementation'))
-            -- vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, with_desc('Go to type definition'))
             vim.keymap.set({ 'n', 'i' }, '<c-s>', vim.lsp.buf.signature_help, with_desc('Show signature help'))
             vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, with_desc('Show code actions'))
             vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, with_desc('Add workspace folder'))
