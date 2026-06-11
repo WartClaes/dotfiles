@@ -17,10 +17,6 @@ end, { expr = true, silent = true })
 
 vim.keymap.set('i', '<C-Space>', '<C-x><C-o>', { silent = true })
 
-vim.schedule(function()
-  require('mini.pairs').setup()
-end)
-
 return {
   {
     'github/copilot.vim',
@@ -65,5 +61,10 @@ return {
         agent = { adapter = "anthropic" },
       }
     },
+  },
+  {
+    'echasnovski/mini.pairs',
+    event = 'InsertEnter',
+    opts = {},
   },
 }
