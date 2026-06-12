@@ -9,6 +9,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     pattern = '*',
 })
 
+-- Disable native autocomplete in special buffers (telescope prompts, quickfix, etc.)
+vim.api.nvim_create_autocmd('BufEnter', {
+  callback = function()
+    if vim.bo.buftype ~= '' then
+      vim.opt_local.autocomplete = false
+    end
+  end,
+})
+
 -- Set filetype to jsonc for some files
 local jsonFileTypeDetect = vim.api.nvim_create_augroup('jsonFtDetect', { clear = true })
 
