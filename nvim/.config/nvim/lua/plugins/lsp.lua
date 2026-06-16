@@ -132,14 +132,33 @@ return {
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, with_desc('Show hover'))
             vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, with_desc('Go to implementation'))
             vim.keymap.set({ 'n', 'i' }, '<c-s>', vim.lsp.buf.signature_help, with_desc('Show signature help'))
-            vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, with_desc('Show code actions'))
+            local function code_action_with_diags()
+                local bufnr = vim.api.nvim_get_current_buf()
+                local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+                local diags = vim.diagnostic.get(bufnr, { lnum = lnum })
+                local lsp_diags = vim.tbl_map(function(d)
+                    return {
+                        range = {
+                            start = { line = d.lnum, character = d.col },
+                            ['end'] = { line = d.end_lnum or d.lnum, character = d.end_col or d.col },
+                        },
+                        severity = d.severity,
+                        message = d.message,
+                        source = d.source,
+                        code = d.code,
+                        data = d.user_data and d.user_data.lsp or nil,
+                    }
+                end, diags)
+                vim.lsp.buf.code_action({ context = { diagnostics = lsp_diags } })
+            end
+            vim.keymap.set('n', '<leader>ca', code_action_with_diags, with_desc('Show code actions'))
             vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, with_desc('Add workspace folder'))
             vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, with_desc('Remove workspace folder'))
             vim.keymap.set('n', '<leader>wl', function()
                 print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
             end, with_desc('List workspace folders'))
             vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, with_desc('Rename symbol'))
-            vim.keymap.set('n', 'g.', vim.lsp.buf.code_action, with_desc('Code action'))
+            vim.keymap.set('n', 'g.', code_action_with_diags, with_desc('Code action'))
             vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, with_desc('Show references'))
         end
     },
