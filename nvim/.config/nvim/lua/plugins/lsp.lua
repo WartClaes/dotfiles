@@ -2,20 +2,29 @@ return {
     {
         'williamboman/mason.nvim',
         build = ":MasonUpdate",
-        cmd = "Mason",
+        cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
+        opts = {
+            registries = {
+                "github:mason-org/mason-registry",
+                "github:Crashdummyy/mason-registry",
+            },
+        },
+    },
+    {
+        'seblyng/roslyn.nvim',
+        ft = { 'cs' },
         opts = {},
     },
     {
         'j-hui/fidget.nvim',
-        tag = 'legacy',
         event = 'LspAttach',
-        config = function()
-            require 'fidget'.setup({
+        opts = {
+            notification = {
                 window = {
-                    blend = 0,
+                    winblend = 0,
                 },
-            })
-        end
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
@@ -28,10 +37,6 @@ return {
             'hrsh7th/cmp-nvim-lsp',
         },
         config = function()
-            -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
-
             local vstlsLanguageSettings = {
                 updateImportsOnFileMove = { enabled = "always" },
                 suggest = {
@@ -47,8 +52,13 @@ return {
                 },
             }
 
-            -- Enable the following language servers
             local servers = {
+                angularls = {
+                    get_language_id = function(_, filetype)
+                        if filetype == 'htmlangular' then return 'html' end
+                        return filetype
+                    end,
+                },
                 eslint = {},
                 jsonls = {
                     settings = {
@@ -67,8 +77,6 @@ return {
                             workspace = { checkThirdParty = false },
                             format = {
                                 enable = true,
-                                -- Put format options here
-                                -- NOTE: the value should be STRING!!
                                 defaultConfig = {
                                     indent_style = "space",
                                     indent_size = "4",
@@ -102,19 +110,16 @@ return {
                 yamlls = {},
             }
 
-            require('mason').setup({});
+            require('mason').setup({})
 
             require('mason-lspconfig').setup({
-                -- install all necessary language servers
                 ensure_installed = vim.tbl_keys(servers),
             })
 
-            -- global config
             vim.lsp.config('*', {
-                capabilities = capabilities,
+                capabilities = require('cmp_nvim_lsp').default_capabilities(),
             })
 
-            -- config specific settings and enable
             for server_name, server_settings in pairs(servers) do
                 vim.lsp.config(server_name, server_settings)
                 vim.lsp.enable(server_name)
@@ -126,7 +131,6 @@ return {
             vim.keymap.del('n', 'grn')
             vim.keymap.del('n', 'grr')
 
-            -- add custom
             local keyBindOpts = { noremap = true, silent = true }
 
             local function with_desc(desc)
@@ -138,16 +142,34 @@ return {
             vim.keymap.set('n', 'gd', vim.lsp.buf.definition, with_desc('Go to definition'))
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, with_desc('Show hover'))
             vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, with_desc('Go to implementation'))
-            -- vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, with_desc('Go to type definition'))
             vim.keymap.set({ 'n', 'i' }, '<c-s>', vim.lsp.buf.signature_help, with_desc('Show signature help'))
-            vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, with_desc('Show code actions'))
+            local function code_action_with_diags()
+                local bufnr = vim.api.nvim_get_current_buf()
+                local lnum = vim.api.nvim_win_get_cursor(0)[1] - 1
+                local diags = vim.diagnostic.get(bufnr, { lnum = lnum })
+                local lsp_diags = vim.tbl_map(function(d)
+                    return {
+                        range = {
+                            start = { line = d.lnum, character = d.col },
+                            ['end'] = { line = d.end_lnum or d.lnum, character = d.end_col or d.col },
+                        },
+                        severity = d.severity,
+                        message = d.message,
+                        source = d.source,
+                        code = d.code,
+                        data = d.user_data and d.user_data.lsp or nil,
+                    }
+                end, diags)
+                vim.lsp.buf.code_action({ context = { diagnostics = lsp_diags } })
+            end
+            vim.keymap.set('n', '<leader>ca', code_action_with_diags, with_desc('Show code actions'))
             vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, with_desc('Add workspace folder'))
             vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, with_desc('Remove workspace folder'))
             vim.keymap.set('n', '<leader>wl', function()
                 print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
             end, with_desc('List workspace folders'))
             vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, with_desc('Rename symbol'))
-            vim.keymap.set('n', 'g.', vim.lsp.buf.code_action, with_desc('Code action'))
+            vim.keymap.set('n', 'g.', code_action_with_diags, with_desc('Code action'))
             vim.keymap.set('n', 'gr', require('telescope.builtin').lsp_references, with_desc('Show references'))
         end
     },

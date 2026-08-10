@@ -45,9 +45,16 @@ vim.diagnostic.config({ virtual_text = false })
 vim.filetype.add({
   extension = {
     mdx = 'mdx'
-  }
+  },
+  pattern = {
+    ['.*%.component%.html'] = 'htmlangular',
+  },
 })
 
 vim.treesitter.language.register('markdown', 'mdx')  -- the someft filetype will use the python parser and queries.
+vim.treesitter.language.register('json', 'jsonc')    -- jsonc has no separate parser in nvim-treesitter main
+vim.treesitter.language.register('angular', 'htmlangular')
 
 o.mouse = ""
+
+o.foldlevelstart = 99 -- open all folds when entering a buffer

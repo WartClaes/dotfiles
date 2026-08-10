@@ -1,8 +1,8 @@
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        version = '*',
-        event = { 'BufReadPost', 'BufNewFile' },
+        branch = 'main',
+        lazy = false,
         cmd = { "TSUpdateSync" },
         build = ':TSUpdate',
         keys = {
@@ -10,61 +10,52 @@ return {
             { "<M-Up>",   desc = "Decrement selection", mode = "x" },
         },
         dependencies = {
-            'nvim-treesitter/nvim-treesitter-textobjects',
             {
                 'nvim-treesitter/nvim-treesitter-context',
                 config = function()
                     require 'treesitter-context'.setup {
-                        enable = true,            -- Enable this plugin (Can be enabled/disabled later via commands)
-                        max_lines = 4,            -- How many lines the window should span. Values <= 0 mean no limit.
-                        min_window_height = 0,    -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+                        enable = true,
+                        max_lines = 4,
+                        min_window_height = 0,
                         line_numbers = true,
-                        multiline_threshold = 20, -- Maximum number of lines to collapse for a single context line
-                        trim_scope = 'outer',     -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-                        mode = 'cursor',          -- Line used to calculate context. Choices: 'cursor', 'topline'
-                        -- Separator between context and content. Should be a single character string, like ''.
-                        -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+                        multiline_threshold = 20,
+                        trim_scope = 'outer',
+                        mode = 'cursor',
                         separator = nil,
-                        zindex = 20,     -- The Z-index of the context window
-                        on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+                        zindex = 20,
+                        on_attach = nil,
                     }
                 end,
             }
-
         },
         config = function()
-            require 'nvim-treesitter.configs'.setup({
-                -- A list of parser names, or "all"
-                ensure_installed = { 'lua', 'rust', 'typescript', 'vim', 'vimdoc', 'markdown' },
-
-                -- Install parsers synchronously (only applied to `ensure_installed`)
-                sync_install = false,
-
-                -- Automatically install missing parsers when entering buffer
-                auto_install = true,
-
-                highlight = {
-                    -- `false` will disable the whole extension
-                    enable = true,
-                },
-
-                incremental_selection = {
-                    enable = true,
-                    keymaps = {
-                        init_selection = '<M-Down>',
-                        node_incremental = '<M-Down>',
-                        scope_incremental = false,
-                        node_decremental = '<M-Up>',
-                    },
-                },
-
-                -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-                -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-                -- Using this option may slow down your editor, and you may see some duplicate highlights.
-                -- Instead of true it can also be a list of languages
-                additional_vim_regex_highlighting = false,
+            require('nvim-treesitter').install({
+                'lua', 'rust', 'typescript', 'vim', 'vimdoc', 'markdown', 'html', 'angular', 'css', 'javascript', 'json', 'yaml', 'c_sharp',
             })
-        end
+            vim.api.nvim_create_autocmd('FileType', {
+                group = vim.api.nvim_create_augroup('treesitter.setup', {}),
+                callback = function(args)
+                    local buf = args.buf
+                    local filetype = args.match
+                    local language = vim.treesitter.language.get_lang(filetype) or filetype
+                    if not vim.treesitter.language.add(language) then
+                        local known = require('nvim-treesitter.parsers')
+                        if known[language] then
+                            require('nvim-treesitter').install({ language })
+                        end
+                        return
+                    end
+                    vim.wo.foldmethod = 'expr'
+                    vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+                    vim.treesitter.start(buf, language)
+                end,
+            })
+        end,
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        branch = 'main',
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
     },
     {
         'Wansmer/treesj',

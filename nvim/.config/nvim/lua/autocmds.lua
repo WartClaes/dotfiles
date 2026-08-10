@@ -9,6 +9,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     pattern = '*',
 })
 
+-- Disable native autocomplete in special buffers (telescope prompts, quickfix, etc.)
+vim.api.nvim_create_autocmd('BufEnter', {
+  callback = function()
+    if vim.bo.buftype ~= '' then
+      vim.opt_local.autocomplete = false
+    end
+  end,
+})
+
 -- Set filetype to jsonc for some files
 local jsonFileTypeDetect = vim.api.nvim_create_augroup('jsonFtDetect', { clear = true })
 
@@ -19,16 +28,5 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
         vim.api.nvim_buf_call(ev.buf, function()
             vim.api.nvim_cmd({ cmd = 'setf', args = { 'jsonc' } }, {})
         end)
-    end,
-})
-
--- Enable crates.nvim only on cargo.toml
-local cargoGroup = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true })
-
-vim.api.nvim_create_autocmd("BufRead", {
-    group = cargoGroup,
-    pattern = "Cargo.toml",
-    callback = function()
-        require("cmp").setup.buffer({ sources = { { name = "crates" } } })
     end,
 })
