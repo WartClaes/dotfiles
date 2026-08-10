@@ -2,7 +2,7 @@ return {
     {
         'nvim-treesitter/nvim-treesitter',
         branch = 'main',
-        event = { 'BufReadPost', 'BufNewFile' },
+        lazy = false,
         cmd = { "TSUpdateSync" },
         build = ':TSUpdate',
         keys = {
@@ -30,7 +30,7 @@ return {
         },
         config = function()
             require('nvim-treesitter').install({
-                'lua', 'rust', 'typescript', 'vim', 'vimdoc', 'markdown', 'html', 'css', 'javascript', 'json',
+                'lua', 'rust', 'typescript', 'vim', 'vimdoc', 'markdown', 'html', 'angular', 'css', 'javascript', 'json', 'yaml', 'c_sharp',
             })
             vim.api.nvim_create_autocmd('FileType', {
                 group = vim.api.nvim_create_augroup('treesitter.setup', {}),

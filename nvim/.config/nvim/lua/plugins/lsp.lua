@@ -2,7 +2,17 @@ return {
     {
         'williamboman/mason.nvim',
         build = ":MasonUpdate",
-        cmd = "Mason",
+        cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
+        opts = {
+            registries = {
+                "github:mason-org/mason-registry",
+                "github:Crashdummyy/mason-registry",
+            },
+        },
+    },
+    {
+        'seblyng/roslyn.nvim',
+        ft = { 'cs' },
         opts = {},
     },
     {
@@ -24,6 +34,7 @@ return {
             'williamboman/mason-lspconfig.nvim',
             'b0o/schemastore.nvim',
             'yioneko/nvim-vtsls',
+            'hrsh7th/cmp-nvim-lsp',
         },
         config = function()
             local vstlsLanguageSettings = {
@@ -42,6 +53,12 @@ return {
             }
 
             local servers = {
+                angularls = {
+                    get_language_id = function(_, filetype)
+                        if filetype == 'htmlangular' then return 'html' end
+                        return filetype
+                    end,
+                },
                 eslint = {},
                 jsonls = {
                     settings = {
@@ -99,20 +116,14 @@ return {
                 ensure_installed = vim.tbl_keys(servers),
             })
 
+            vim.lsp.config('*', {
+                capabilities = require('cmp_nvim_lsp').default_capabilities(),
+            })
+
             for server_name, server_settings in pairs(servers) do
                 vim.lsp.config(server_name, server_settings)
                 vim.lsp.enable(server_name)
             end
-
-            vim.api.nvim_create_autocmd('LspAttach', {
-                group = vim.api.nvim_create_augroup('lsp_native_completion', { clear = true }),
-                callback = function(args)
-                    local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    if client then
-                        vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-                    end
-                end,
-            })
 
             -- remove vim.lsp.config defaults
             vim.keymap.del('n', 'gra')

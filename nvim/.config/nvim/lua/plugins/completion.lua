@@ -1,30 +1,4 @@
-vim.o.autocomplete = true
-vim.o.completeopt = 'menu,menuone,noinsert,noselect,fuzzy,popup'
-
--- Keymaps are set after VeryLazy fires so copilot.vim (lazy=false) can't overwrite them.
--- copilot.vim sets its own <Tab> mapping during its config, which runs before VeryLazy.
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'VeryLazy',
-  once = true,
-  callback = function()
-    vim.keymap.set('i', '<Tab>', function()
-      return vim.fn.pumvisible() == 1 and '<C-n>' or '<Tab>'
-    end, { expr = true, silent = true })
-
-    vim.keymap.set('i', '<S-Tab>', function()
-      return vim.fn.pumvisible() == 1 and '<C-p>' or '<S-Tab>'
-    end, { expr = true, silent = true })
-
-    vim.keymap.set('i', '<CR>', function()
-      if vim.fn.pumvisible() == 1 and vim.fn.complete_info()['selected'] ~= -1 then
-        return '<C-y>'
-      end
-      return '<CR>'
-    end, { expr = true, silent = true })
-
-    vim.keymap.set('i', '<C-Space>', '<C-x><C-o>', { silent = true })
-  end,
-})
+vim.o.completeopt = 'menu,menuone,noselect'
 
 return {
   {
@@ -72,8 +46,70 @@ return {
     },
   },
   {
-    'echasnovski/mini.pairs',
+    'L3MON4D3/LuaSnip',
+    build = 'make install_jsregexp',
+    dependencies = {
+      'rafamadriz/friendly-snippets',
+    },
+    config = function()
+      require('luasnip.loaders.from_vscode').lazy_load()
+    end,
+  },
+  {
+    'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
-    opts = {},
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'saadparwaiz1/cmp_luasnip',
+      'L3MON4D3/LuaSnip',
+    },
+    config = function()
+      local cmp = require 'cmp'
+      local luasnip = require 'luasnip'
+
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
+          ['<CR>'] = cmp.mapping.confirm({ select = false }),
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+        }),
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'path' },
+        }, {
+          { name = 'buffer' },
+        }),
+      })
+    end,
   },
 }
